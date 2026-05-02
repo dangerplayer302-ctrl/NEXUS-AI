@@ -1,0 +1,2 @@
+from flask import Flask,request,jsonify;import requests,os,json;app=Flask(__name__);MEM="memory.json";load=lambda: json.load(open(MEM)) if os.path.exists(MEM) else [];save=lambda m: json.dump(m,open(MEM,"w"));@app.route("/chat",methods=["POST"]);def chat(): u=request.json.get("message",""); m=load(); m.append({"role":"user","content":u}); r=requests.post("http://localhost:11434/api/generate",json={"model":"llama3","prompt":u}); b=r.json().get("response",""); m.append({"role":"bot","content":b}); save(m); return jsonify({"reply":b});app.run(port=5000)
+  Add app.py
